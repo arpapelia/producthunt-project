@@ -22,8 +22,25 @@ def create(request):
             product.pub_date = timezone.datetime.now()
             product.hunter = request.user
             product.save()
-            return redirect('home')
+            return redirect('/products/' + str(product.id)) #ilmeisesti id aina databasen objekteilla
         else:
             return render(request, 'products/create.html',{'error':'All fields are required.'})
     else:
         return render(request, 'products/create.html')
+
+def detail(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    return render(request, 'products/detail.html',{'product':product})
+
+#tästä viewsistä tulee urliin tämä product id '<int:product_id>'.
+# ja sitten itse url myös implementoi tämän detail funktion mikä
+#avaa siis products detail htlm sivun, ja siellä html sivulla
+# myös 'product' nimellä dataa
+
+@login_required(login_url="/accounts/login") #PITÄÄ OLLAtähänkin log in että voi votee
+def upvote(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, pk=product_id)
+        product.votes_total += 1
+        product.save()
+        return redirect('/products/' + str(product.id))
