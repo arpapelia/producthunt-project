@@ -17,7 +17,7 @@ def signup(request):
                 print (user)
                 return redirect('home')
         else:
-            return render(request, 'signup.html', {'error': 'Sasswords need to match!'})
+            return render(request, 'signup.html', {'error': 'Passwords need to match!'})
     else:
         #user wants to enter info (e.g. updating browser page)
         return render(request, 'signup.html')
