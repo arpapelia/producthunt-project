@@ -38,7 +38,9 @@ def login_auth(request):
         return render(request, 'login.html')
 
 def logout(request):
-    return render(request, 'signup.html')
+    if request.method == 'POST':
+        auth.logout(request)
+        return redirect('home')
 
 #HOW TRY & EXCEPT WORKS
 '''If an error is encountered, a try block code execution is stopped and transferred
